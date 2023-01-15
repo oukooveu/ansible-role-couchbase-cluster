@@ -1,14 +1,8 @@
 ---
-# there is weird certificate issue with cloudfront instances
-# where packages.couchbase.com is hosted so retries were added
 - name: debian | couchbase release
   ansible.builtin.apt:
     deb: "https://packages.couchbase.com/releases/couchbase-release/couchbase-release-{{ couchbase_release_version }}-amd64.deb"
     state: present
-    # register: result
-    # retries: 10
-    # delay: 1
-    # until: result is not failed
 
 # https://forums.couchbase.com/t/installation-couchbase-server-7-1-on-debian-11/33563/2
 - name: remove couchbase-lite-repo from apt (this repository isn't required and breaks install)
@@ -17,14 +11,8 @@
     state: absent
     regexp: "^deb http:\/\/packages.couchbase.com\/releases\/couchbase-lite-repo"
 
-# retries here because packages.couchbase.com occasionally returns error
 - name: debian | couchbase server
   ansible.builtin.apt:
     name: "couchbase-server={{ couchbase_server_version }}-1"
     update_cache: true
     state: present
-    # register: result
-    # retries: 10
-    # delay: 1
-    # until: result is not failed
-    # notify: restart couchbase service
