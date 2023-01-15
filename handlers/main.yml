@@ -1,0 +1,5 @@
+---
+- name: restart couchbase service
+  ansible.builtin.systemd:
+    name: couchbase-server
+    state: restarted

@@ -1,0 +1,12 @@
+---
+- name: redhat | couchbase release
+  ansible.builtin.yum:
+    name: "https://packages.couchbase.com/releases/couchbase-release/couchbase-release-{{ couchbase_release_version }}-x86_64.rpm"
+    disable_gpg_check: true
+    state: present
+
+- name: redhat | couchbase server
+  ansible.builtin.yum:
+    name: "couchbase-server-{{ couchbase_server_version }}"
+    update_cache: true
+    state: present

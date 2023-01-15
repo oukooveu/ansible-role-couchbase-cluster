@@ -1,0 +1,24 @@
+---
+couchbase_release_version: '1.0'
+couchbase_server_version: '7.1.3-3479'
+couchbase_cluster_name: 'cbc-dc1'
+couchbase_host_address: "{{ ansible_default_ipv4.address }}"
+couchbase_admin_user: 'admin'
+couchbase_admin_password: 'password'
+couchbase_services: 'kv,n1ql,index'  # kv,n1ql,index,fts,eventing,cbas,backup
+couchbase_data_memory_quota: 512
+couchbase_index_memory_quota: 1024
+couchbase_index_storage_mode: 'plasma'  # plasma,magma
+# https://docs.couchbase.com/server/current/rest-api/rest-bucket-create.html
+couchbase_bucket_defaults:
+  bucketType: 'couchbase'
+  ramQuota: 128
+  storageBackend: 'couchstore'
+  replicaNumber: 1
+  compressionMode: 'passive'
+  flushEnabled: 0
+couchbase_buckets: []
+# https://docs.couchbase.com/server/current/rest-api/rbac.html
+couchbase_user_defaults:
+  roles: 'ro_admin'
+couchbase_users: []

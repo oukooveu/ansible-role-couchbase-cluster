@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    couchbase_buckets:
+      - name: 'just-a-bucket'
+        replicaNumber: 0
+        ramQuota: 100
+    couchbase_users:
+      - name: 'alice'
+        password: 'mysecret'
+        roles: 'bucket_full_access[just-a-bucket]'
+      - name: 'bob'
+        password: 'hissecret'
+  roles:
+    - role: oukooveu.couchbase_cluster

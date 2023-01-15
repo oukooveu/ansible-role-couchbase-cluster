@@ -1,0 +1,51 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: podman
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+  flake8
+platforms:
+  - name: node1
+    image: ${MOLECULE_IMAGE:-debian:10}
+    command: /sbin/init
+    systemd: true
+    network: molecule-couchbase
+    published_ports:
+      - 127.0.0.1:8092:8091/tcp
+  - name: node2
+    image: ${MOLECULE_IMAGE:-debian:10}
+    command: /sbin/init
+    systemd: true
+    network: molecule-couchbase
+    published_ports:
+      - 127.0.0.1:8093:8091/tcp
+  - name: node3
+    image: ${MOLECULE_IMAGE:-debian:10}
+    command: /sbin/init
+    systemd: true
+    network: molecule-couchbase
+    published_ports:
+      - 127.0.0.1:8094:8091/tcp
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      node1:
+        couchbase_services: 'kv,n1ql'
+      node2:
+        couchbase_services: 'kv,index'
+      node3:
+        couchbase_services: 'fts,eventing,cbas,backup'
+  config_options:
+    defaults:
+      callbacks_enabled: ansible.posix.profile_tasks
+verifier:
+  name: testinfra
+  enabled: true
+  options:
+    p: 'no:pytest-ansible'
+    v: true

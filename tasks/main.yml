@@ -1,0 +1,25 @@
+---
+- name: main | install packages
+  ansible.builtin.include_tasks: "install/{{ ansible_os_family }}.yml"
+
+- name: main | adjust nproc limit for couchbase user
+  community.general.pam_limits:
+    domain: couchbase
+    limit_type: '-'
+    limit_item: nproc
+    value: 16384
+  notify: restart couchbase service
+
+- name: flush handlers
+  ansible.builtin.meta: flush_handlers
+
+- name: main | define init node
+  ansible.builtin.set_fact:
+    init_node: "{{ ansible_play_hosts | sort | first }}"
+
+- name: main | configure cluster
+  ansible.builtin.include_tasks: cluster.yml
+
+- name: main | configure buckets and users
+  ansible.builtin.include_tasks: configure.yml
+  when: inventory_hostname == init_node

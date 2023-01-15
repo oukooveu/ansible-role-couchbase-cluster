@@ -1,0 +1,49 @@
+---
+- name: configure | get buckets information
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/pools/default/buckets
+    method: 'GET'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+  register: buckets
+
+- name: configure | create buckets
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/pools/default/buckets
+    method: 'POST'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    body:
+      name: "{{ item.name }}"
+      bucketType: "{{ item.bucketType | d(couchbase_bucket_defaults.bucketType) }}"
+      ramQuota: "{{ item.ramQuota | d(couchbase_bucket_defaults.ramQuota) }}"
+      storageBackend: "{{ item.storageBackend | d(couchbase_bucket_defaults.storageBackend) }}"
+      replicaNumber: "{{ item.replicaNumber | d(couchbase_bucket_defaults.replicaNumber) }}"
+      compressionMode: "{{ item.compressionMode | d(couchbase_bucket_defaults.compressionMode) }}"
+      flushEnabled: "{{ item.flushEnabled | d(couchbase_bucket_defaults.flushEnabled) }}"
+    body_format: form-urlencoded
+    status_code:
+      - 202
+  loop: "{{ couchbase_buckets }}"
+  when: item.name not in buckets['json'] | map(attribute='name') | list
+
+- name: configure | get users information
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/settings/rbac/users
+    method: 'GET'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+  register: users
+
+- name: configure | create users
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:8091/settings/rbac/users/local/{{ item.name }}"
+    method: 'PUT'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    body:
+      password: "{{ item.password }}"
+      roles: "{{ item.roles | d(couchbase_user_defaults.roles) }}"
+    body_format: form-urlencoded
+  loop: "{{ couchbase_users }}"
+  when: item.name not in users['json'] | map(attribute='id') | list

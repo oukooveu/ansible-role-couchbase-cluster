@@ -1,0 +1,34 @@
+---
+- name: cluster/rebalance | get cluster information
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/pools/default
+    method: 'GET'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+  register: pool
+
+- name: cluster/rebalance | start
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/controller/rebalance
+    method: 'POST'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    body:
+      knownNodes: "{{ pool['json']['nodes'] | map(attribute='otpNode') | list | join(',') }}"
+    body_format: form-urlencoded
+  when: not pool.json.balanced|bool
+
+- name: cluster/rebalance | wait for completion
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/pools/default/rebalanceProgress
+    method: 'GET'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    body_format: form-urlencoded
+  register: result
+  retries: 5
+  delay: 10
+  until:
+    - result.status == 200
+    - result.json.status == "none"
+  when: not pool.json.balanced|bool

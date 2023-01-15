@@ -1,0 +1,40 @@
+---
+- name: cluster | wait for nodes to be healthy
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/nodes/self
+    method: 'GET'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+  register: nodes
+  retries: 5
+  delay: 10
+  until:
+    - nodes.status == 200
+    - nodes.json.status == "healthy"
+
+- name: cluster | check are cluster nodes initialized already
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091//pools/default
+    method: 'GET'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    status_code:
+      - 200
+      - 404
+  register: pool
+
+- name: cluster | init
+  ansible.builtin.include_tasks: cluster/init.yml
+  when:
+    - inventory_hostname == init_node
+    - pool.status == 404
+
+- name: cluster | nodes
+  ansible.builtin.include_tasks: cluster/node.yml
+  when:
+    - inventory_hostname != init_node
+    - pool.status == 404
+
+- name: cluster | rebalance
+  ansible.builtin.include_tasks: cluster/rebalance.yml
+  when: inventory_hostname == init_node

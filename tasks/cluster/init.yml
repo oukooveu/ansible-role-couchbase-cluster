@@ -1,0 +1,21 @@
+---
+# works only for couchbase version >= 7.1.x
+- name: cluster/init | initialize cluster
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/clusterInit
+    method: 'POST'
+    body:
+      hostname: "{{ couchbase_host_address }}"
+      username: "{{ couchbase_admin_user }}"
+      password: "{{ couchbase_admin_password }}"
+      clusterName: "{{ couchbase_cluster_name }}"
+      port: 'SAME'
+      services: "{{ couchbase_services }}"
+      memoryQuota: "{{ couchbase_data_memory_quota }}"
+      indexMemoryQuota: "{{ couchbase_index_memory_quota }}"
+      indexerStorageMode: "{{ couchbase_index_storage_mode }}"
+    body_format: form-urlencoded
+  register: result
+  retries: 5
+  delay: 10
+  until: result.status > 0

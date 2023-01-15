@@ -1,0 +1,13 @@
+---
+- name: cluster/node | join cluster
+  ansible.builtin.uri:
+    url: "http://{{ couchbase_host_address }}:8091/node/controller/doJoinCluster"
+    method: 'POST'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    body:
+      hostname: "{{ hostvars[init_node]['couchbase_host_address'] | d(hostvars[init_node]['ansible_default_ipv4']['address']) }}"
+      user: "{{ couchbase_admin_user }}"
+      password: "{{ couchbase_admin_password }}"
+      services: "{{ couchbase_services }}"
+    body_format: form-urlencoded
