@@ -21,87 +21,22 @@ There are no special requirements, everything is installed through Couchbase pac
 
 ## Role Variables
 
-### couchbase_release_version
-
-Version of couchbase meta package (configures package manager).
-
-Default value: `1.0`.
-
-### couchbase_server_version
-
-Couchbase server version. To list all available packages use `apt list -a couchbase-server` for Debian or `yum list --showduplicates couchbase-server` for RHEL.
-
-Default value: `7.1.3-3479`.
-
-### couchbase_cluster_name
-
-Couchbase cluster name.
-
-Default value: `cbc-dc1`.
-
-### couchbase_host_address
-
-The host address for couchbase nodes. If default value is not suitable (for example addresses from dedicated private network is in use) provide addresses for all nodes through host variables.
-
-Default value: `ansible_default_ipv4.address`.
-
-### couchbase_admin_user
-
-Couchbase admin user, can only be setup on cluster initialization.
-
-Default value: `admin`.
-
-### couchbase_admin_password
-
-Couchbase admin password, can only be setup on cluster initialization.
-
-Default value: `password`.
-
-### couchbase_services
-
-Comma separated list fo services are assigned to node in the cluster. For different service on different nodes put it into host vars.
-
-Default value: `kv,n1ql,index`.
-
-### couchbase_data_memory_quota
-
-Couchbase data (kv) service memory quota in megabytes.
-
-Default value: `512`.
-
-### couchbase_index_memory_quota
-
-Couchbase index service memory quota in megabytes.
-
-### couchbase_index_storage_mode
-
-Couchbase index storage mode.
-
-Default value: `plasma`.
-
-### couchbase_bucket_defaults
-
-Default options for buckets.
-
-Default value: see defaults/main.yml for details.
-
-### couchbase_buckets
-
-List of buckets to be created.
-
-Mandatory options: `name`.
-
-### couchbase_user_defaults
-
-Default options for users.
-
-Default value: see defaults/main.yml for details.
-
-### couchbase_users
-
-List of users to be created.
-
-Mandatory options: `name` (user name) and `password` (user password).
+| Variable | Description | Default value |
+|----------|-------------|---------------|
+| couchbase_release_version | Version of couchbase meta package (configures package manager) | `1.0` |
+| couchbase_server_version | Couchbase server version. To list all available packages use `apt list -a couchbase-server` for Debian or `yum list --showduplicates couchbase-server` for RHEL | `7.1.3-3479` |
+| couchbase_cluster_name | Couchbase cluster name | `cbc-dc1` |
+| couchbase_host_address | The host address for couchbase nodes. If default value is not suitable (for example addresses from dedicated private network is in use) provide addresses for all nodes through host variables | `{{ ansible_default_ipv4.address }}` |
+| couchbase_admin_user | Couchbase admin user, can only be setup on cluster initialization | `admin` |
+| couchbase_admin_password | Couchbase admin password, can only be setup on cluster initialization | `password` |
+| couchbase_services | Comma separated list fo services are assigned to node in the cluster. For different service on different nodes put it into host vars | `kv,n1ql,index` |
+| couchbase_data_memory_quota | Couchbase data (kv) service memory quota in megabytes | `512` |
+| couchbase_index_memory_quota | Couchbase index service memory quota in megabytes | `1024` |
+| couchbase_index_storage_mode | Couchbase index storage mode | `plasma` |
+| couchbase_bucket_defaults | Default options for buckets | see defaults/main.yml for details |
+| couchbase_buckets | List of buckets to be created | `[]`, mandatory option: `name` |
+| couchbase_user_defaults | Default options for users | see defaults/main.yml for details |
+| couchbase_users | List of users to be created | `[]`, mandatory options: `name` (user name) and `password` (user password) |
 
 ## Example Playbook
 
