@@ -2,4 +2,5 @@
 - name: restart couchbase service
   ansible.builtin.systemd:
     name: couchbase-server
+    daemon_reload: true
     state: restarted

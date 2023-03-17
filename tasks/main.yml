@@ -2,12 +2,19 @@
 - name: main | install packages
   ansible.builtin.include_tasks: "install/{{ ansible_os_family }}.yml"
 
-- name: main | adjust nproc limit for couchbase user
-  community.general.pam_limits:
-    domain: couchbase
-    limit_type: '-'
-    limit_item: nproc
-    value: 16384
+- name: main | create systemd directory
+  ansible.builtin.file:
+    path: /etc/systemd/system/couchbase-server.service.d
+    state: directory
+    mode: '0755'
+
+- name: main | adjust nproc limit for couchbase service
+  ansible.builtin.copy:
+    content: |
+      [Service]
+      LimitNPROC=16384
+    dest: /etc/systemd/system/couchbase-server.service.d/limits.conf
+    mode: '0644'
   notify: restart couchbase service
 
 - name: flush handlers
