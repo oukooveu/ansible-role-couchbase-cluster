@@ -27,15 +27,7 @@
   loop: "{{ couchbase_buckets }}"
   when: item.name not in buckets['json'] | map(attribute='name') | list
 
-- name: configure | get users information
-  ansible.builtin.uri:
-    url: http://127.0.0.1:8091/settings/rbac/users
-    method: 'GET'
-    user: "{{ couchbase_admin_user }}"
-    password: "{{ couchbase_admin_password }}"
-  register: users
-
-- name: configure | create users
+- name: configure | create/update users
   ansible.builtin.uri:
     url: "http://127.0.0.1:8091/settings/rbac/users/local/{{ item.name }}"
     method: 'PUT'
@@ -46,4 +38,3 @@
       roles: "{{ item.roles | d(couchbase_user_defaults.roles) }}"
     body_format: form-urlencoded
   loop: "{{ couchbase_users }}"
-  when: item.name not in users['json'] | map(attribute='id') | list
