@@ -15,12 +15,12 @@
     password: "{{ couchbase_admin_password }}"
     body:
       name: "{{ item.name }}"
-      bucketType: "{{ item.bucketType | d(couchbase_bucket_defaults.bucketType) }}"
-      ramQuota: "{{ item.ramQuota | d(couchbase_bucket_defaults.ramQuota) }}"
-      storageBackend: "{{ item.storageBackend | d(couchbase_bucket_defaults.storageBackend) }}"
-      replicaNumber: "{{ item.replicaNumber | d(couchbase_bucket_defaults.replicaNumber) }}"
-      compressionMode: "{{ item.compressionMode | d(couchbase_bucket_defaults.compressionMode) }}"
-      flushEnabled: "{{ item.flushEnabled | d(couchbase_bucket_defaults.flushEnabled) }}"
+      bucketType: "{{ item.bucketType | d(__couchbase_bucket_defaults.bucketType) }}"
+      ramQuota: "{{ item.ramQuota | d(__couchbase_bucket_defaults.ramQuota) }}"
+      storageBackend: "{{ item.storageBackend | d(__couchbase_bucket_defaults.storageBackend) }}"
+      replicaNumber: "{{ item.replicaNumber | d(__couchbase_bucket_defaults.replicaNumber) }}"
+      compressionMode: "{{ item.compressionMode | d(__couchbase_bucket_defaults.compressionMode) }}"
+      flushEnabled: "{{ item.flushEnabled | d(__couchbase_bucket_defaults.flushEnabled) }}"
     body_format: form-urlencoded
     status_code:
       - 202
@@ -35,6 +35,6 @@
     password: "{{ couchbase_admin_password }}"
     body:
       password: "{{ item.password }}"
-      roles: "{{ item.roles | d(couchbase_user_defaults.roles) }}"
+      roles: "{{ item.roles | d(__couchbase_user_defaults.roles) }}"
     body_format: form-urlencoded
   loop: "{{ couchbase_users }}"
