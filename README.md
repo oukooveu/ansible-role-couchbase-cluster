@@ -11,8 +11,8 @@ The role provides following:
 - add configured users.
 
 Important considerations:
-- role works only for couchbase server version greater then 7.1.x (`clusterInit` REST API method only available from 7.1 is used);
-- bucket and users are only created and not deleted;
+- the role works only for couchbase server version greater then 7.1.x (`clusterInit` REST API method only available from 7.1 is used);
+- bucket can only be created and not updated or deleted, users' password and roles are updated but not deleted;
 - buckets should exist if RBAC based on buckets (like `bucket_full_access[travel-sample]`) is used.
 
 ## Requirements
@@ -33,10 +33,27 @@ There are no special requirements, everything is installed through Couchbase pac
 | couchbase_data_memory_quota | Couchbase data (kv) service memory quota in megabytes | `512` |
 | couchbase_index_memory_quota | Couchbase index service memory quota in megabytes | `1024` |
 | couchbase_index_storage_mode | Couchbase index storage mode | `plasma` |
-| couchbase_bucket_defaults | Default options for buckets | see defaults/main.yml for details |
-| couchbase_buckets | List of buckets to be created | `[]`, mandatory option: `name` |
-| couchbase_user_defaults | Default options for users | see defaults/main.yml for details |
-| couchbase_users | List of users to be created | `[]`, mandatory options: `name` (user name) and `password` (user password) |
+| couchbase_buckets | List of buckets to be created (list of dictionaries) | `[]`, options listed below |
+| couchbase_users | List of users to be created (list of dictionaries) | `[]`, options listed below |
+
+### couchbase_buckets
+
+| Variable | Description | Mandatory | Default |
+|----------|-------------|-----------|---------|
+| name | The name of the bucket to create | Yes | N/A |
+| bucketType | The type of bucket to create ("couchbase", "ephemeral" or "memcached") | No | `couchbase` |
+| ramQuota | The amount of memory to be allocated to the bucket, per node, in MiB  | No | `128` |
+| storageBackend | The type of storage to use with the bucket ("couchstore" or "magma") | No | `couchstore` |
+| replicaNumber| The number of replicas for the bucket | No | `1` |
+| compressionMode | The compression mode for the bucket ("off", "passive" or "active") | No | `passive` |
+| flushEnabled | Whether flushing is enabled for the bucket | No | `0` |
+
+### couchbase_users
+| Variable | Description | Mandatory | Default |
+|----------|-------------|-----------|---------|
+| name | Name of the user to be created/updated | Yes | N/A |
+| password | User's password | Yes| N/A |
+| roles | Roles to be given to user's profile | No | `ro_admin` |
 
 ## Example Playbook
 
