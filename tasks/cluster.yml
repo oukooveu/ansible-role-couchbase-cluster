@@ -38,3 +38,14 @@
 - name: cluster | rebalance
   ansible.builtin.include_tasks: cluster/rebalance.yml
   when: inventory_hostname == init_node
+
+- name: cluster | manage external address
+  ansible.builtin.uri:
+    url: "http://127.0.0.1:8091/node/controller/setupAlternateAddresses/external"
+    method: 'PUT'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    body:
+      hostname: "{{ couchbase_external_address }}"
+    body_format: form-urlencoded
+  when: couchbase_external_address is defined
