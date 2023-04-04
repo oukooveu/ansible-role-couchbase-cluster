@@ -5,12 +5,12 @@
     method: 'GET'
     user: "{{ couchbase_admin_user }}"
     password: "{{ couchbase_admin_password }}"
-  register: nodes
+  register: node
   retries: 5
   delay: 10
   until:
-    - nodes.status == 200
-    - nodes.json.status == "healthy"
+    - node.status == 200
+    - node.json.status == "healthy"
 
 - name: cluster | check are cluster nodes initialized already
   ansible.builtin.uri:

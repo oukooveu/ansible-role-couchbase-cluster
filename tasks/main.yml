@@ -26,7 +26,10 @@
 
 - name: main | configure cluster
   ansible.builtin.include_tasks: cluster.yml
+  when: not ansible_check_mode
 
 - name: main | configure buckets and users
   ansible.builtin.include_tasks: configure.yml
-  when: inventory_hostname == init_node
+  when:
+    - inventory_hostname == init_node
+    - not ansible_check_mode
