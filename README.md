@@ -35,6 +35,7 @@ There are no special requirements, everything is installed through Couchbase pac
 | couchbase_index_memory_quota | Couchbase index service memory quota in megabytes | `1024` |
 | couchbase_index_storage_mode | Couchbase index storage mode | `plasma` |
 | couchbase_buckets | List of buckets to be created (list of dictionaries) | `[]`, options listed below |
+| couchbase_create_primary_indexes | Create primary indexes for all buckets | `true` |
 | couchbase_users | List of users to be created (list of dictionaries) | `[]`, options listed below |
 
 ### couchbase_buckets

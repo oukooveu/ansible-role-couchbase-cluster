@@ -10,4 +10,5 @@ couchbase_data_memory_quota: 512
 couchbase_index_memory_quota: 1024
 couchbase_index_storage_mode: 'plasma'  # plasma,magma
 couchbase_buckets: []
+couchbase_create_primary_indexes: true
 couchbase_users: []
