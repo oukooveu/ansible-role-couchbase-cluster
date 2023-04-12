@@ -35,7 +35,7 @@
     password: "{{ couchbase_admin_password }}"
     force_basic_auth: true
     body:
-      statement: "CREATE PRIMARY INDEX idx_{{ item.name }}_primary IF NOT EXISTS ON {{ item.name }}"
+      statement: "CREATE PRIMARY INDEX `idx_{{ item.name }}_primary` IF NOT EXISTS ON `{{ item.name }}`"
     body_format: form-urlencoded
   loop: "{{ couchbase_buckets }}"
   when: couchbase_create_primary_indexes|bool
