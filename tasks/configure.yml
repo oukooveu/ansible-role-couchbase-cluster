@@ -40,6 +40,18 @@
   loop: "{{ couchbase_buckets }}"
   when: couchbase_create_primary_indexes|bool
 
+- name: configure | execute custom queries
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8093/query/service
+    method: 'POST'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    force_basic_auth: true
+    body:
+      statement: "{{ item }}"
+    body_format: form-urlencoded
+  loop: "{{ couchbase_custom_queries }}"
+
 - name: configure | create/update users
   ansible.builtin.uri:
     url: "http://127.0.0.1:8091/settings/rbac/users/local/{{ item.name }}"

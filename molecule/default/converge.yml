@@ -6,6 +6,8 @@
       - name: 'just-a-bucket'
         replicaNumber: 0
         ramQuota: 100
+    couchbase_custom_queries:
+      - 'CREATE INDEX `just-a-index` IF NOT EXISTS ON `just-a-bucket` (`just_an_id`, (meta().`id`))'
     couchbase_users:
       - name: 'alice'
         password: 'mysecret'
