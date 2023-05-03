@@ -1,6 +1,7 @@
 yamllint==1.31.0
 ansible==7.1.0
 ansible-lint==6.15.0
+ansible-compat==3.0.2
 flake8==6.0.0
 molecule[podman,lint]==4.0.4
 pytest-testinfra==7.0.0
