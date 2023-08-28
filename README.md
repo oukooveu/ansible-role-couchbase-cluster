@@ -19,6 +19,8 @@ Important considerations:
 
 There are no special requirements, everything is installed through Couchbase package.
 
+This role does not work for RockyLinux 9 and Couchbase Server 7.1.x because Couchbase's package requires `ncurses-compat-libs` which will be removed in RHEL 9. However there is no such dependency for Couchbase 7.2.x so this will be resolved later with upgrade to latest couchbase version.
+
 ## Role Variables
 
 | Variable | Description | Default value |
@@ -89,7 +91,7 @@ pip install -r molecule/default/requirements.txt
 molecule test
 ```
 
-To run tests for non-default image (`debian:10`) set `MOLECULE_IMAGE` environment variable to an appropriate value, for example:
+To run tests for non-default image (`debian:11`) set `MOLECULE_IMAGE` environment variable to an appropriate value, for example:
 ```
 export MOLECULE_IMAGE=rockylinux:8
 ```
