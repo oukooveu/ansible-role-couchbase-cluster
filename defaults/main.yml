@@ -1,6 +1,6 @@
 ---
 couchbase_release_version: '1.0'
-couchbase_server_version: '7.1.3-3479'
+couchbase_server_version: '7.1.5-3878'
 couchbase_cluster_name: 'cbc-dc1'
 couchbase_host_address: "{{ ansible_default_ipv4.address }}"
 couchbase_admin_user: 'admin'
