@@ -12,7 +12,7 @@
     - node.status == 200
     - node.json.status == "healthy"
 
-- name: cluster | check are cluster nodes initialized already
+- name: cluster | check cluster nodes were initialized already
   ansible.builtin.uri:
     url: http://127.0.0.1:8091//pools/default
     method: 'GET'
@@ -23,13 +23,13 @@
       - 404
   register: pool
 
-- name: cluster | init
+- name: cluster | init one node
   ansible.builtin.include_tasks: cluster/init.yml
   when:
     - inventory_hostname == init_node
     - pool.status == 404
 
-- name: cluster | nodes
+- name: cluster | add node to the cluster
   ansible.builtin.include_tasks: cluster/node.yml
   when:
     - inventory_hostname != init_node
