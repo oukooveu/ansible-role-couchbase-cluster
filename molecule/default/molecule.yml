@@ -11,21 +11,21 @@ lint: |
 platforms:
   - name: node1.local
     image: ${MOLECULE_IMAGE:-debian:10}
-    command: /sbin/init
+    command: /lib/systemd/systemd
     systemd: true
     network: molecule-couchbase
     published_ports:
       - 127.0.0.1:8092:8091/tcp
   - name: node2.local
     image: ${MOLECULE_IMAGE:-debian:10}
-    command: /sbin/init
+    command: /lib/systemd/systemd
     systemd: true
     network: molecule-couchbase
     published_ports:
       - 127.0.0.1:8093:8091/tcp
   - name: node3.local
     image: ${MOLECULE_IMAGE:-debian:10}
-    command: /sbin/init
+    command: /lib/systemd/systemd
     systemd: true
     network: molecule-couchbase
     published_ports:
