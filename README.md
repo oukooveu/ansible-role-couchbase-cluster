@@ -26,7 +26,7 @@ There are no special requirements, everything is installed through Couchbase pac
 | couchbase_release_version | Version of couchbase meta package (configures package manager) | `1.0` |
 | couchbase_server_version | Couchbase server version. To list all available packages use `apt list -a couchbase-server` for Debian or `yum list --showduplicates couchbase-server` for RHEL | `7.1.3-3479` |
 | couchbase_cluster_name | Couchbase cluster name | `cbc-dc1` |
-| couchbase_host_address | The host address for couchbase nodes. If default value is not suitable (for example addresses from dedicated private network is in use) provide addresses for all nodes through host variables | `{{ ansible_default_ipv4.address }}` |
+| couchbase_host_address | The host address for couchbase nodes. If default value is not suitable (for example addresses from dedicated private network is in use) provide addresses for all nodes through host variables. Host FQDN can be used, see details [here](https://docs.couchbase.com/server/current/learn/clusters-and-availability/nodes.html#naming-when-creating-a-single-node-cluster) | `{{ ansible_default_ipv4.address }}` |
 | couchbase_external_address | External ([alternate](https://docs.couchbase.com/server/current/learn/clusters-and-availability/connectivity.html#alternate-addresses)) node address | N/A |
 | couchbase_admin_user | Couchbase admin user, can only be setup on cluster initialization | `admin` |
 | couchbase_admin_password | Couchbase admin password, can only be setup on cluster initialization | `password` |

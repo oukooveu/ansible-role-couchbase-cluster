@@ -2,6 +2,7 @@
 - name: Converge
   hosts: all
   vars:
+    couchbase_host_address: "{{ ansible_fqdn }}"
     couchbase_buckets:
       - name: 'just-a-bucket'
         replicaNumber: 0
