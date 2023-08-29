@@ -1,3 +1,7 @@
 ---
 skip_list:
   - name[casing]
+
+exclude_paths:
+  - .venv
+  - .vscode

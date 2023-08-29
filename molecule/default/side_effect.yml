@@ -2,7 +2,7 @@
 - name: side effects
   hosts: all
   tasks:
-    - name: install sample bucket
+    - name: install sample bucket # noqa: run-once[task]
       ansible.builtin.uri:
         url: http://127.0.0.1:8091/sampleBuckets/install
         method: 'POST'
@@ -14,7 +14,7 @@
         status_code:
           - 202
       run_once: true
-    - name: provide alice access to this bucket
+    - name: provide alice access to this bucket # noqa: run-once[task]
       ansible.builtin.uri:
         url: http://127.0.0.1:8091/settings/rbac/users/local/alice
         method: 'PUT'
