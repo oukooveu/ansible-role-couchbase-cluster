@@ -9,6 +9,11 @@ couchbase_services: 'kv,n1ql,index'  # kv,n1ql,index,fts,eventing,cbas,backup
 couchbase_data_memory_quota: 512
 couchbase_index_memory_quota: 1024
 couchbase_index_storage_mode: 'plasma'  # plasma,magma
+couchbase_index_threads: 0
+couchbase_index_log_level: 'info'
+couchbase_index_redistribute_enabled: false
+couchbase_index_replica: 0
+couchbase_index_page_bloom_filter_enabled: false
 couchbase_buckets: []
 couchbase_custom_queries: []
 couchbase_create_primary_indexes: true

@@ -3,6 +3,8 @@
   hosts: all
   vars:
     couchbase_host_address: "{{ ansible_fqdn }}"
+    couchbase_index_replica: 1
+    couchbase_index_redistribute_enabled: true
     couchbase_buckets:
       - name: 'just-a-bucket'
         replicaNumber: 0

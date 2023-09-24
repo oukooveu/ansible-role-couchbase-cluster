@@ -27,6 +27,20 @@
   loop: "{{ couchbase_buckets }}"
   when: item.name not in buckets['json'] | map(attribute='name') | list
 
+- name: configure | indexes settings
+  ansible.builtin.uri:
+    url: http://127.0.0.1:8091/settings/indexes
+    method: 'POST'
+    user: "{{ couchbase_admin_user }}"
+    password: "{{ couchbase_admin_password }}"
+    body:
+      indexerThreads: "{{ couchbase_index_threads }}"
+      logLevel: "{{ couchbase_index_log_level }}"
+      redistributeIndexes: "{{ 'true' if couchbase_index_redistribute_enabled | bool else 'false' }}"
+      numReplica: "{{ couchbase_index_replica }}"
+      enablePageBloomFilter: "{{ 'true' if couchbase_index_page_bloom_filter_enabled | bool else 'false' }}"
+    body_format: form-urlencoded
+
 - name: configure | create primary indexes
   ansible.builtin.uri:
     url: http://127.0.0.1:8093/query/service

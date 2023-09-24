@@ -36,6 +36,11 @@ This role does not work for RockyLinux 9 and Couchbase Server 7.1.x because Couc
 | couchbase_data_memory_quota | Couchbase data (kv) service memory quota in megabytes | `512` |
 | couchbase_index_memory_quota | Couchbase index service memory quota in megabytes | `1024` |
 | couchbase_index_storage_mode | Couchbase index storage mode | `plasma` |
+| couchbase_index_threads | Number of threads for the indexer process to use, this applies equally to all index nodes in the cluster regardless of the number of cores on each node. A value of `0` causes the indexer process to use one thread per CPU core on each individual node | `0` |
+| couchbase_index_log_level | Indexer logging level | `info` |
+| couchbase_index_redistribute_enabled | When `true`, Couchbase Server redistributes indexes when rebalance occurs, in order to optimize performance | `false` |
+| couchbase_index_replica | The default number of index replicas to be created by the Index Service whenever `CREATE INDEX` is invoked. For further details see below | `0` |
+| couchbase_index_page_bloom_filter_enabled | Whether Bloom filters are enabled for memory management. The default is that they are disabled | `false` |
 | couchbase_buckets | List of buckets to be created (list of dictionaries) | `[]`, options listed below |
 | couchbase_custom_queries | List of queries which are executed during cluster configuration | `[]` |
 | couchbase_create_primary_indexes | Create primary indexes for all buckets | `true` |
@@ -59,6 +64,13 @@ This role does not work for RockyLinux 9 and Couchbase Server 7.1.x because Couc
 | name | Name of the user to be created/updated | Yes | N/A |
 | password | User's password | Yes| N/A |
 | roles | Roles to be given to user's profile | No | `ro_admin` |
+
+### indexes replication
+
+Setting `couchbase_index_replica` does not affect existing indexes. Index replication settings can be changed with:
+```
+ALTER INDEX `INDEX_NAME` ON `BUCKET_NAME` WITH { "action": "replica_count", "num_replica": REPLICA_COUNT }
+```
 
 ## Example Playbook
 
