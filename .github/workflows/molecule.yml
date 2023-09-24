@@ -2,9 +2,11 @@
 name: molecule tests
 on:
   push:
-  pull_request:
     branches:
       - master
+  pull_request_review:
+    types:
+      - submitted
 jobs:
   molecule:
     runs-on: ubuntu-latest
